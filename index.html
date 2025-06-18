@@ -1,25 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Festival</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Festival – Coming Soon</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
   <style>
-    body {
-      font-family: sans-serif;
-      background: linear-gradient(to bottom right, #ff7b7b, #ffde7b);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      color: white;
-      text-shadow: 1px 1px 2px #000;
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      background:radial-gradient(circle at top left,#ff7b7b,#ffde7b);
+      color:#fff;min-height:100vh;display:flex;align-items:center;
+      justify-content:center;text-align:center;padding:2rem}
+    .container{max-width:700px;width:100%}
+    h1{font-size:3rem;margin-bottom:1rem;text-shadow:1px 1px 4px rgba(0,0,0,.4)}
+    p{font-size:1.25rem;margin-bottom:2rem;line-height:1.6}
+    .tagline{font-size:1.1rem;font-weight:700;margin-bottom:2rem;color:#ffe5e5}
+    .button{
+      background:#fff;color:#ff5e5e;border:none;padding:.75rem 1.5rem;
+      border-radius:100px;font-weight:600;font-size:1rem;cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,.2);transition:.3s}
+    .button:hover{background:#ffefef}
+    .waitlist{
+      background:rgba(255,255,255,.15);border-radius:16px;padding:2rem;
+      margin-top:3rem;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+    .waitlist h2{font-size:2rem;margin-bottom:1rem}
+    .waitlist p{font-size:1rem;margin-bottom:1.5rem;color:#ffeaea}
+    input[type=email]{
+      padding:.75rem 1rem;border-radius:50px;border:none;width:70%;
+      max-width:350px;margin-right:.5rem;font-size:1rem}
+    form{display:flex;flex-wrap:wrap;justify-content:center}
+    footer{margin-top:3rem;font-size:.9rem;color:#ffdada}
+    @media(max-width:500px){
+      input[type=email]{width:100%;margin-bottom:1rem}
+      form{flex-direction:column;gap:.5rem}}
   </style>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    /* 1️⃣  Replace the placeholders below with your real project values */
+    const SUPABASE_URL  = 'https://aakqexydkkkqplzakkoa.supabase.co';
+    const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFha3FleHlka2trcXBsemFra29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3ODg1NzQsImV4cCI6MjA2NTM2NDU3NH0.9HSAcgRGLKMRVQME80Qvt0YcFLd5LHKHZgL2SYbcPXw';
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  </script>
 </head>
+
 <body>
-  <h1>🎉 Festival is Coming Soon 🎉</h1>
+  <div class="container">
+    <h1>🎉 Festival is Coming</h1>
+    <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
+
+    <p>
+      Festival lets students deposit money into local bar, club, and restaurant
+      balances, spend instantly, and earn cashback on larger deposits &mdash;
+      no cards, no hassle.
+    </p>
+    <p>
+      Whether you're buying drinks, covering entry, or treating friends,
+      Festival makes it effortless. Bars win too, with upfront revenue and real-time analytics.
+    </p>
+
+    <!-- Waitlist Section -->
+    <div class="waitlist">
+      <h2>Join the Waitlist</h2>
+      <p>Early birds get exclusive rewards when we launch.</p>
+
+      <form id="waitlist-form">
+        <input type="email" name="email" placeholder="Your email address" required />
+        <button class="button" type="submit">Notify Me</button>
+      </form>
+    </div>
+
+    <footer>
+      © 2025 Festival &middot; iOS &amp; Android app launching soon
+    </footer>
+  </div>
+
+  <!-- Waitlist JS -->
+  <script>
+    const form = document.getElementById('waitlist-form');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value.trim();
+
+      if (!email) return;
+
+      // Insert into Supabase
+      const { error } = await supabase.from('waitlist').insert({ email });
+
+      if (error) {
+        alert('Oops! ' + (error.message || 'Something went wrong.'));
+      } else {
+        alert('🎉 You’re on the list! Check your inbox for launch news.');
+        form.reset();
+      }
+    });
+  </script>
 </body>
 </html>
