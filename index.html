@@ -39,16 +39,6 @@
       input[type=email]{width:100%;margin-bottom:1rem}
       form{flex-direction:column;gap:.5rem}}
   </style>
-
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    /* 1️⃣  Replace the placeholders below with your real project values */
-    const SUPABASE_URL  = 'https://aakqexydkkkqplzakkoa.supabase.co';
-    const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFha3FleHlka2trcXBsemFra29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3ODg1NzQsImV4cCI6MjA2NTM2NDU3NH0.9HSAcgRGLKMRVQME80Qvt0YcFLd5LHKHZgL2SYbcPXw';
-
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  </script>
 </head>
 
 <body>
@@ -78,28 +68,38 @@
     </div>
 
     <footer>
-      © 2025 Festival &middot; iOS &amp; Android app launching soon
+      © 2025 Festival · iOS & Android app launching soon
     </footer>
   </div>
 
-  <!-- Waitlist JS -->
+  <!-- Waitlist JS — sends email to your Edge Function -->
   <script>
-    const form = document.getElementById('waitlist-form');
+    const WAITLIST_ENDPOINT =
+      "https://aakqexydkkkqplzakkoa.supabase.co/functions/v1/join-waitlist"; // 🔗 your live function URL
 
-    form.addEventListener('submit', async (e) => {
+    const form = document.getElementById("waitlist-form");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = e.target.email.value.trim();
-
       if (!email) return;
 
-      // Insert into Supabase
-      const { error } = await supabase.from('waitlist').insert({ email });
+      try {
+        const res = await fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-      if (error) {
-        alert('Oops! ' + (error.message || 'Something went wrong.'));
-      } else {
-        alert('🎉 You’re on the list! Check your inbox for launch news.');
+        if (!res.ok) {
+          const { error } = await res.json();
+          throw new Error(error || "Unknown error");
+        }
+
+        alert("🎉 You’re on the list! Watch your inbox for launch news.");
         form.reset();
+      } catch (err) {
+        alert("Oops! " + err.message);
       }
     });
   </script>
