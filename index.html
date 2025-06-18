@@ -74,34 +74,36 @@
 
   <!-- Waitlist JS — sends email to your Edge Function -->
   <script>
-    const WAITLIST_ENDPOINT =
-      "https://aakqexydkkkqplzakkoa.supabase.co/functions/v1/join-waitlist"; // 🔗 your live function URL
+const WAITLIST_ENDPOINT =
+  "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
 
-    const form = document.getElementById("waitlist-form");
+const form = document.getElementById("waitlist-form");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = e.target.email.value.trim();
-      if (!email) return;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value.trim();
+  if (!email) return;
 
-      try {
-        const res = await fetch(WAITLIST_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-
-        if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error || "Unknown error");
-        }
-
-        alert("🎉 You’re on the list! Watch your inbox for launch news.");
-        form.reset();
-      } catch (err) {
-        alert("Oops! " + err.message);
-      }
+  try {
+    const res = await fetch(WAITLIST_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
     });
-  </script>
+
+    if (!res.ok) {
+      // try to extract detailed error
+      let msg = await res.text();
+      try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
+      throw new Error(msg);
+    }
+
+    alert("🎉 You’re on the list! Watch your inbox for launch news.");
+    form.reset();
+  } catch (err) {
+    alert("Oops! " + err.message);
+  }
+});
+</script>
 </body>
 </html>
