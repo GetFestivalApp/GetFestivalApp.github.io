@@ -248,7 +248,8 @@
         showMsg("🎉 You’re on the list! Watch your inbox for launch news.", false);
         form.reset();
       } catch (err) {
-        showMsg("Oops! " + err.message, true);
+        const friendlyError = err.message.includes("duplicate key") ? "You’re already on the list! 🎉" : err.message;
+        showMsg("Oops! " + friendlyError, true);
       }
     });
 
