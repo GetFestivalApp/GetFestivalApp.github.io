@@ -8,9 +8,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Icons (replace paths with your own if needed) -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
   <!-- SEO / Social -->
   <meta name="description" content="Festival lets students pay at bars and clubs instantly and get rewarded. Join the waitlist now.">
@@ -21,88 +21,153 @@
 
   <!-- Styles -->
   <style>
-    :root{
-      --pink:#ff007d;      /* brand neon */
-      --pink-glow:#ff0786; /* for softer glow areas */
-      --dark:#070611;      /* near-black background */
+    :root {
+      --pink: #ff007d;
+      --pink-light: #ff66a3;
+      --dark-bg: #0a0014;
+      --glass-bg: rgba(255, 255, 255, 0.05);
     }
 
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-
-    body{
-      font-family:'Inter',sans-serif;
-      background:radial-gradient(circle at 50% 0%,rgba(255,0,125,.2) 0%,var(--dark) 55%,var(--dark) 100%);
-      color:#fff;
-      min-height:100vh;
-      display:flex;align-items:center;justify-content:center;
-      text-align:center;padding:2rem;
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* subtle brand glow behind content */
-    body::before{
-      content:"";
-      position:fixed;inset:0;
-      background:radial-gradient(circle at center,
-        var(--pink-glow) 0%,
-        transparent 40%);
-      filter:blur(160px);
-      opacity:.35;pointer-events:none;
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 50% 0%, var(--pink-light) 0%, var(--dark-bg) 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow-x: hidden;
     }
 
-    .container{max-width:700px;width:100%}
-
-    /* Logo */
-    .logo{
-      width:120px;height:120px;margin:0 auto 1.75rem;
-      background:url('/logo-ticket.png') center/contain no-repeat;
-      filter:drop-shadow(0 0 16px var(--pink));
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--pink-light), transparent 60%);
+      filter: blur(200px);
+      opacity: 0.25;
+      z-index: -1;
     }
 
-    h1{font-size:3rem;margin-bottom:1rem;text-shadow:0 2px 8px rgba(0,0,0,.6);}
-    p{font-size:1.25rem;margin-bottom:2rem;line-height:1.6}
-    .tagline{font-size:1.1rem;font-weight:700;margin-bottom:2rem;color:var(--pink-glow)}
-
-    .button{
-      background:var(--pink);color:#fff;border:none;
-      padding:.75rem 1.5rem;border-radius:100px;
-      font-weight:600;font-size:1rem;cursor:pointer;
-      box-shadow:0 4px 14px rgba(255,0,125,.4);transition:.3s;
-    }
-    .button:hover{box-shadow:0 2px 10px rgba(255,0,125,.6);}
-
-    .waitlist{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(8px);
-      border-radius:20px;padding:2rem;margin-top:3rem;
-      box-shadow:0 8px 24px rgba(0,0,0,.45);
-    }
-    .waitlist h2{font-size:2rem;margin-bottom:1rem;}
-    .waitlist p{font-size:1rem;margin-bottom:1.5rem;color:#ffd1f1;}
-
-    form{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;}
-    input[type=email]{
-      flex:1 1 350px;
-      padding:.75rem 1rem;border-radius:50px;border:none;
-      font-size:1rem;min-width:250px;
+    .container {
+      max-width: 700px;
+      width: 100%;
     }
 
-    #message{margin-top:1rem;font-size:1rem;min-height:1.4em;}
+    .logo {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 1.5rem;
+      background: url('logo.png') center/contain no-repeat;
+      filter: drop-shadow(0 0 16px var(--pink));
+    }
 
-    footer{margin-top:3rem;font-size:.9rem;color:#b98ab5;}
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px rgba(255, 0, 125, 0.4);
+    }
 
-    @media(max-width:500px){
-      h1{font-size:2.25rem;}
-      input[type=email]{width:100%;}
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--pink-light);
+    }
+
+    .waitlist {
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      margin-top: 3rem;
+    }
+
+    .waitlist h2 {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .waitlist p {
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+      color: #ffd1f1;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    input[type="email"] {
+      flex: 1 1 300px;
+      padding: 0.75rem 1rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .button {
+      background: linear-gradient(to right, var(--pink), var(--pink-light));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 0, 125, 0.4);
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      opacity: 0.9;
+    }
+
+    #message {
+      margin-top: 1rem;
+      font-size: 1rem;
+      min-height: 1.4em;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #b98ab5;
+    }
+
+    @media(max-width: 500px) {
+      h1 {
+        font-size: 2.25rem;
+      }
+      input[type="email"] {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <!-- Brand logo -->
     <div class="logo" aria-hidden="true"></div>
-
     <h1>🎉 Festival is Coming</h1>
     <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
 
@@ -116,23 +181,15 @@
       Festival makes it effortless. Bars win too, with upfront revenue and real-time analytics.
     </p>
 
-    <!-- Waitlist Section -->
     <div class="waitlist">
       <h2>Join the Waitlist</h2>
       <p>Early birds get exclusive rewards when we launch.</p>
 
       <form id="waitlist-form">
-        <input type="email"
-               name="email"
-               placeholder="Your email address"
-               aria-label="Email address"
-               required />
-        <button class="button"
-                type="submit"
-                aria-label="Join the waitlist">Notify Me</button>
+        <input type="email" name="email" placeholder="Your email address" aria-label="Email address" required />
+        <button class="button" type="submit" aria-label="Join the waitlist">Notify Me</button>
       </form>
 
-      <!-- Inline feedback -->
       <div id="message"></div>
     </div>
 
@@ -141,51 +198,48 @@
     </footer>
   </div>
 
-  <!-- Waitlist JS -->
   <script>
-  const WAITLIST_ENDPOINT =
-    "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
+    const WAITLIST_ENDPOINT =
+      "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
 
-  const form    = document.getElementById("waitlist-form");
-  const message = document.getElementById("message");
+    const form = document.getElementById("waitlist-form");
+    const message = document.getElementById("message");
 
-  // Basic email regex: user@domain.tld
-  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value.trim();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value.trim();
 
-    // Validate format client-side first
-    if (!emailRegex.test(email)){
-      showMsg("Please enter a valid email.", true);
-      return;
-    }
-
-    try {
-      const res = await fetch(WAITLIST_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!res.ok) {
-        let msg = await res.text();
-        try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
-        throw new Error(msg);
+      if (!emailRegex.test(email)) {
+        showMsg("Please enter a valid email.", true);
+        return;
       }
 
-      showMsg("🎉 You’re on the list! Watch your inbox for launch news.");
-      form.reset();
-    } catch (err) {
-      showMsg("Oops! " + err.message, true);
-    }
-  });
+      try {
+        const res = await fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-  function showMsg(text, isError = false){
-    message.textContent = text;
-    message.style.color = isError ? "#ff8faa" : "#ffffff";
-  }
+        if (!res.ok) {
+          let msg = await res.text();
+          try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
+          throw new Error(msg);
+        }
+
+        showMsg("🎉 You’re on the list! Watch your inbox for launch news.");
+        form.reset();
+      } catch (err) {
+        showMsg("Oops! " + err.message, true);
+      }
+    });
+
+    function showMsg(text, isError = false) {
+      message.textContent = text;
+      message.style.color = isError ? "#ff8faa" : "#ffffff";
+    }
   </script>
 </body>
 </html>
