@@ -37,7 +37,7 @@
     body {
       font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at 50% 0%, var(--neon-pink) 0%, var(--dark-bg) 100%);
-      color: white;
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -47,13 +47,14 @@
       overflow-x: hidden;
     }
 
+    /* global glow */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background: radial-gradient(circle at center, var(--neon-pink), transparent 60%);
       filter: blur(160px);
-      opacity: 0.2;
+      opacity: 0.18;
       z-index: -1;
     }
 
@@ -62,18 +63,47 @@
       width: 100%;
     }
 
-    .logo {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 1.5rem;
-      background: url('logo.png') center/contain no-repeat;
-      filter: drop-shadow(0 0 18px var(--neon-pink));
+    /* APP ICON (double‑squircle) */
+    .app-icon {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 2rem;
+      border-radius: 28%; /* squircle */
+      background: #0b0b0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* orange outer glow */
+      box-shadow:
+        0 0 22px rgba(255, 138, 0, 0.8),
+        0 0 44px rgba(255, 138, 0, 0.55);
+    }
+
+    .icon-inner {
+      width: 120px;
+      height: 120px;
+      border-radius: 28%;
+      background: var(--neon-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* pink inner glow */
+      box-shadow:
+        0 0 20px rgba(255, 0, 125, 0.9),
+        0 0 36px rgba(255, 0, 125, 0.6);
+    }
+
+    .icon-inner img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.7));
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: white;
+      color: #ffffff;
       text-shadow: 0 0 10px var(--neon-pink);
     }
 
@@ -81,7 +111,6 @@
       font-size: 1.2rem;
       margin-bottom: 1.5rem;
       line-height: 1.6;
-      color: #fefefe;
     }
 
     .tagline {
@@ -92,6 +121,7 @@
       text-shadow: 0 0 8px var(--neon-orange);
     }
 
+    /* WAITLIST CARD */
     .waitlist {
       background: var(--glass-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -105,7 +135,6 @@
     .waitlist h2 {
       font-size: 2rem;
       margin-bottom: 0.75rem;
-      color: white;
     }
 
     .waitlist p {
@@ -128,12 +157,12 @@
       border: none;
       font-size: 1rem;
       background: #111;
-      color: white;
+      color: #fff;
     }
 
     .button {
       background: linear-gradient(to right, var(--neon-pink), var(--neon-orange));
-      color: white;
+      color: #fff;
       border: none;
       padding: 0.75rem 1.5rem;
       border-radius: 100px;
@@ -152,7 +181,6 @@
       margin-top: 1rem;
       font-size: 1rem;
       min-height: 1.4em;
-      color: #ff8faa;
     }
 
     footer {
@@ -162,30 +190,32 @@
     }
 
     @media(max-width: 500px) {
-      h1 {
-        font-size: 2.25rem;
-      }
-      input[type="email"] {
-        width: 100%;
-      }
+      h1 { font-size: 2.25rem; }
+      input[type="email"] { width: 100%; }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="logo" aria-hidden="true"></div>
-    <h1>🎉 Festival is Coming</h1>
+    <!-- Double‑squircle logo icon -->
+    <div class="app-icon" aria-hidden="true">
+      <div class="icon-inner">
+        <img src="logo.png" alt="Festival logo">
+      </div>
+    </div>
+
+    <h1>Festival is Coming</h1>
     <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
 
     <p>
       Festival lets students deposit money into local bar, club, and restaurant
-      balances, spend instantly, and earn cashback on larger deposits &mdash;
+      balances, spend instantly, and earn cashback on larger deposits —
       no cards, no hassle.
     </p>
     <p>
       Whether you're buying drinks, covering entry, or treating friends,
-      Festival makes it effortless. Bars win too, with upfront revenue and real-time analytics.
+      Festival makes it effortless. Bars win too, with upfront revenue and real‑time analytics.
     </p>
 
     <div class="waitlist">
@@ -201,52 +231,14 @@
     </div>
 
     <footer>
-      © 2025 Festival · iOS &amp; Android app launching soon
+      © 2025 Festival · iOS & Android app launching soon
     </footer>
   </div>
 
   <script>
-    const WAITLIST_ENDPOINT =
-      "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
+    const WAITLIST_ENDPOINT = "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
 
     const form = document.getElementById("waitlist-form");
     const message = document.getElementById("message");
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = e.target.email.value.trim();
-
-      if (!emailRegex.test(email)) {
-        showMsg("Please enter a valid email.", true);
-        return;
-      }
-
-      try {
-        const res = await fetch(WAITLIST_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-
-        if (!res.ok) {
-          let msg = await res.text();
-          try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
-          throw new Error(msg);
-        }
-
-        showMsg("🎉 You’re on the list! Watch your inbox for launch news.", false);
-        form.reset();
-      } catch (err) {
-        showMsg("Oops! " + err.message, true);
-      }
-    });
-
-    function showMsg(text, isError = false) {
-      message.textContent = text;
-      message.style.color = isError ? "#ff8faa" : "#ffffff";
-    }
-  </script>
-</body>
-</html>
+    const emailRegex = /^[^\s@]+@[^\
