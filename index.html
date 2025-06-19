@@ -8,41 +8,101 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- Icons (replace paths with your own if needed) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- SEO / Social -->
+  <meta name="description" content="Festival lets students pay at bars and clubs instantly and get rewarded. Join the waitlist now.">
+  <meta property="og:title" content="Festival – The Future of Nightlife Payments">
+  <meta property="og:description" content="Fast, fun, and rewarding payments at your favorite college bars.">
+  <meta property="og:image" content="https://yourdomain.com/og-image.png">
+  <meta property="og:type" content="website">
+
   <!-- Styles -->
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --pink:#ff007d;      /* brand neon */
+      --pink-glow:#ff0786; /* for softer glow areas */
+      --dark:#070611;      /* near-black background */
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
     body{
       font-family:'Inter',sans-serif;
-      background:radial-gradient(circle at top left,#ff7b7b,#ffde7b);
-      color:#fff;min-height:100vh;display:flex;align-items:center;
-      justify-content:center;text-align:center;padding:2rem}
+      background:radial-gradient(circle at 50% 0%,rgba(255,0,125,.2) 0%,var(--dark) 55%,var(--dark) 100%);
+      color:#fff;
+      min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      text-align:center;padding:2rem;
+    }
+
+    /* subtle brand glow behind content */
+    body::before{
+      content:"";
+      position:fixed;inset:0;
+      background:radial-gradient(circle at center,
+        var(--pink-glow) 0%,
+        transparent 40%);
+      filter:blur(160px);
+      opacity:.35;pointer-events:none;
+    }
+
     .container{max-width:700px;width:100%}
-    h1{font-size:3rem;margin-bottom:1rem;text-shadow:1px 1px 4px rgba(0,0,0,.4)}
+
+    /* Logo */
+    .logo{
+      width:120px;height:120px;margin:0 auto 1.75rem;
+      background:url('/logo-ticket.png') center/contain no-repeat;
+      filter:drop-shadow(0 0 16px var(--pink));
+    }
+
+    h1{font-size:3rem;margin-bottom:1rem;text-shadow:0 2px 8px rgba(0,0,0,.6);}
     p{font-size:1.25rem;margin-bottom:2rem;line-height:1.6}
-    .tagline{font-size:1.1rem;font-weight:700;margin-bottom:2rem;color:#ffe5e5}
+    .tagline{font-size:1.1rem;font-weight:700;margin-bottom:2rem;color:var(--pink-glow)}
+
     .button{
-      background:#fff;color:#ff5e5e;border:none;padding:.75rem 1.5rem;
-      border-radius:100px;font-weight:600;font-size:1rem;cursor:pointer;
-      box-shadow:0 4px 10px rgba(0,0,0,.2);transition:.3s}
-    .button:hover{background:#ffefef}
+      background:var(--pink);color:#fff;border:none;
+      padding:.75rem 1.5rem;border-radius:100px;
+      font-weight:600;font-size:1rem;cursor:pointer;
+      box-shadow:0 4px 14px rgba(255,0,125,.4);transition:.3s;
+    }
+    .button:hover{box-shadow:0 2px 10px rgba(255,0,125,.6);}
+
     .waitlist{
-      background:rgba(255,255,255,.15);border-radius:16px;padding:2rem;
-      margin-top:3rem;box-shadow:0 8px 20px rgba(0,0,0,.2)}
-    .waitlist h2{font-size:2rem;margin-bottom:1rem}
-    .waitlist p{font-size:1rem;margin-bottom:1.5rem;color:#ffeaea}
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(8px);
+      border-radius:20px;padding:2rem;margin-top:3rem;
+      box-shadow:0 8px 24px rgba(0,0,0,.45);
+    }
+    .waitlist h2{font-size:2rem;margin-bottom:1rem;}
+    .waitlist p{font-size:1rem;margin-bottom:1.5rem;color:#ffd1f1;}
+
+    form{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;}
     input[type=email]{
-      padding:.75rem 1rem;border-radius:50px;border:none;width:70%;
-      max-width:350px;margin-right:.5rem;font-size:1rem}
-    form{display:flex;flex-wrap:wrap;justify-content:center}
-    footer{margin-top:3rem;font-size:.9rem;color:#ffdada}
+      flex:1 1 350px;
+      padding:.75rem 1rem;border-radius:50px;border:none;
+      font-size:1rem;min-width:250px;
+    }
+
+    #message{margin-top:1rem;font-size:1rem;min-height:1.4em;}
+
+    footer{margin-top:3rem;font-size:.9rem;color:#b98ab5;}
+
     @media(max-width:500px){
-      input[type=email]{width:100%;margin-bottom:1rem}
-      form{flex-direction:column;gap:.5rem}}
+      h1{font-size:2.25rem;}
+      input[type=email]{width:100%;}
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
+    <!-- Brand logo -->
+    <div class="logo" aria-hidden="true"></div>
+
     <h1>🎉 Festival is Coming</h1>
     <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
 
@@ -62,48 +122,70 @@
       <p>Early birds get exclusive rewards when we launch.</p>
 
       <form id="waitlist-form">
-        <input type="email" name="email" placeholder="Your email address" required />
-        <button class="button" type="submit">Notify Me</button>
+        <input type="email"
+               name="email"
+               placeholder="Your email address"
+               aria-label="Email address"
+               required />
+        <button class="button"
+                type="submit"
+                aria-label="Join the waitlist">Notify Me</button>
       </form>
+
+      <!-- Inline feedback -->
+      <div id="message"></div>
     </div>
 
     <footer>
-      © 2025 Festival · iOS & Android app launching soon
+      © 2025 Festival · iOS &amp; Android app launching soon
     </footer>
   </div>
 
-  <!-- Waitlist JS — sends email to your Edge Function -->
+  <!-- Waitlist JS -->
   <script>
-const WAITLIST_ENDPOINT =
-  "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
+  const WAITLIST_ENDPOINT =
+    "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
 
-const form = document.getElementById("waitlist-form");
+  const form    = document.getElementById("waitlist-form");
+  const message = document.getElementById("message");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = e.target.email.value.trim();
-  if (!email) return;
+  // Basic email regex: user@domain.tld
+  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
 
-  try {
-    const res = await fetch(WAITLIST_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
 
-    if (!res.ok) {
-      // try to extract detailed error
-      let msg = await res.text();
-      try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
-      throw new Error(msg);
+    // Validate format client-side first
+    if (!emailRegex.test(email)){
+      showMsg("Please enter a valid email.", true);
+      return;
     }
 
-    alert("🎉 You’re on the list! Watch your inbox for launch news.");
-    form.reset();
-  } catch (err) {
-    alert("Oops! " + err.message);
+    try {
+      const res = await fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        let msg = await res.text();
+        try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
+        throw new Error(msg);
+      }
+
+      showMsg("🎉 You’re on the list! Watch your inbox for launch news.");
+      form.reset();
+    } catch (err) {
+      showMsg("Oops! " + err.message, true);
+    }
+  });
+
+  function showMsg(text, isError = false){
+    message.textContent = text;
+    message.style.color = isError ? "#ff8faa" : "#ffffff";
   }
-});
-</script>
+  </script>
 </body>
 </html>
