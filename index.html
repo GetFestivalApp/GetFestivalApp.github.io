@@ -25,6 +25,7 @@
       --neon-pink: #ff007d;
       --neon-orange: #ff8a00;
       --dark-bg: #000000;
+      --charcoal-bg: #141414;
       --glass-bg: rgba(255, 255, 255, 0.03);
     }
 
@@ -47,7 +48,6 @@
       overflow-x: hidden;
     }
 
-    /* global glow */
     body::before {
       content: "";
       position: fixed;
@@ -63,41 +63,25 @@
       width: 100%;
     }
 
-    /* APP ICON (double‑squircle) */
     .app-icon {
       width: 160px;
       height: 160px;
       margin: 0 auto 2rem;
-      border-radius: 28%; /* squircle */
-      background: #0b0b0b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* orange outer glow */
-      box-shadow:
-        0 0 22px rgba(255, 138, 0, 0.8),
-        0 0 44px rgba(255, 138, 0, 0.55);
-    }
-
-    .icon-inner {
-      width: 120px;
-      height: 120px;
       border-radius: 28%;
-      background: var(--neon-pink);
+      background: var(--charcoal-bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      /* pink inner glow */
       box-shadow:
-        0 0 20px rgba(255, 0, 125, 0.9),
-        0 0 36px rgba(255, 0, 125, 0.6);
+        0 0 25px rgba(255, 138, 0, 0.75),
+        0 0 60px rgba(255, 138, 0, 0.45);
     }
 
-    .icon-inner img {
-      width: 70%;
-      height: 70%;
+    .app-icon img {
+      width: 75%;
+      height: 75%;
       object-fit: contain;
-      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(0 0 6px var(--neon-pink));
     }
 
     h1 {
@@ -121,7 +105,6 @@
       text-shadow: 0 0 8px var(--neon-orange);
     }
 
-    /* WAITLIST CARD */
     .waitlist {
       background: var(--glass-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -198,11 +181,8 @@
 
 <body>
   <div class="container">
-    <!-- Double‑squircle logo icon -->
     <div class="app-icon" aria-hidden="true">
-      <div class="icon-inner">
-        <img src="logo.png" alt="Festival logo">
-      </div>
+      <img src="logo.png" alt="Festival logo">
     </div>
 
     <h1>Festival is Coming</h1>
@@ -215,7 +195,7 @@
     </p>
     <p>
       Whether you're buying drinks, covering entry, or treating friends,
-      Festival makes it effortless. Bars win too, with upfront revenue and real‑time analytics.
+      Festival makes it effortless. Bars win too, with upfront revenue and real-time analytics.
     </p>
 
     <div class="waitlist">
@@ -241,4 +221,41 @@
     const form = document.getElementById("waitlist-form");
     const message = document.getElementById("message");
 
-    const emailRegex = /^[^\s@]+@[^\
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value.trim();
+
+      if (!emailRegex.test(email)) {
+        showMsg("Please enter a valid email.", true);
+        return;
+      }
+
+      try {
+        const res = await fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        if (!res.ok) {
+          let msg = await res.text();
+          try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
+          throw new Error(msg);
+        }
+
+        showMsg("🎉 You’re on the list! Watch your inbox for launch news.", false);
+        form.reset();
+      } catch (err) {
+        showMsg("Oops! " + err.message, true);
+      }
+    });
+
+    function showMsg(text, isError = false) {
+      message.textContent = text;
+      message.style.color = isError ? "#ff8faa" : "#ffffff";
+    }
+  </script>
+</body>
+</html>
