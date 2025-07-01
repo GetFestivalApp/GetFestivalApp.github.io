@@ -59,7 +59,7 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 1100px;
       width: 100%;
     }
 
@@ -91,63 +91,51 @@
       text-shadow: 0 0 10px var(--neon-pink);
     }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-
     .tagline {
       font-size: 1.1rem;
       font-weight: 700;
       margin-bottom: 2rem;
-      color: var(--neon-orange);
-      text-shadow: 0 0 8px var(--neon-orange);
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.25);
     }
 
     .features {
       display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
       justify-content: center;
+      align-items: flex-start;
+      margin-top: 3rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .features > div {
-      flex: 1 1 320px;
-      background: var(--glass-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.75rem;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 8px 24px rgba(255, 0, 125, 0.2);
+    .column {
+      flex: 1 1 420px;
       color: #fff;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+      text-align: left;
     }
 
-    .features > div.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .features > div:hover {
-      box-shadow: 0 0 20px rgba(255, 0, 125, 0.35), 0 0 60px rgba(255, 138, 0, 0.15);
-    }
-
-    .features h2 {
-      font-size: 1.5rem;
+    .column h2 {
+      font-size: 1.6rem;
       margin-bottom: 1rem;
-      color: var(--neon-pink);
-      text-shadow: 0 0 6px var(--neon-pink);
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+    }
+
+    .column p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      line-height: 1.6;
     }
 
     .divider {
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
-      backdrop-filter: blur(10px);
-      margin: 0 1rem;
+      width: 2px;
+      background: #ffffff;
+      opacity: 0.2;
+      border-radius: 4px;
+      height: auto;
     }
 
     .waitlist {
@@ -217,9 +205,18 @@
       color: #888;
     }
 
-    @media(max-width: 800px) {
+    @media(max-width: 900px) {
+      .features {
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
       .divider {
         display: none;
+      }
+
+      .column {
+        text-align: center;
       }
     }
 
@@ -240,19 +237,38 @@
     <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
 
     <div class="features">
-      <div class="students">
+      <div class="column">
         <h2>For Students</h2>
         <p>
-          Festival lets you deposit money into exclusive bar and club balances that you can spend instantly through our mobile app — no cards, no cash, no waiting. The more you deposit, the more you earn back with built-in cashback rewards. Whether you're grabbing a drink, skipping the line, or covering a table, Festival makes nightlife seamless.
+          Festival replaces cards and cash with a sleek, digital payment experience
+          at your favorite college bars. Deposit money into location-specific balances
+          and spend instantly from your phone — whether it’s for drinks, cover,
+          or a round for friends.
+        </p>
+        <p>
+          The more you deposit, the more cashback you earn. No hidden fees. No awkward taps. Just
+          smooth, rewarding payments designed for nightlife.
+        </p>
+        <p>
+          Easily manage all your balances in one app and never lose track of your tab again.
         </p>
       </div>
 
       <div class="divider" aria-hidden="true"></div>
 
-      <div class="businesses">
+      <div class="column">
         <h2>For Businesses</h2>
         <p>
-          Festival gives bars, clubs, and restaurants instant access to upfront revenue and a modern customer experience. Accept deposits, drive higher spend with built-in incentives, and track everything in real time with our business dashboard. No hardware, no point-of-sale integration required.
+          Festival gives bars and clubs upfront revenue while simplifying the entire customer experience.
+          Customers preload balances that can only be spent at your location — driving commitment and spend.
+        </p>
+        <p>
+          You get a real-time dashboard to view deposits, purchases, and trends. There's
+          no POS integration required, and no hardware either — just scan and confirm.
+        </p>
+        <p>
+          Festival boosts cash flow, improves line speed, and gives you control with instant
+          analytics and built-in loyalty.
         </p>
       </div>
     </div>
@@ -317,21 +333,6 @@
       message.textContent = text;
       message.style.color = isError ? "#ff8faa" : "#ffffff";
     }
-
-    // Animate feature sections on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.features > div').forEach(div => {
-      if (!div.classList.contains('divider')) {
-        observer.observe(div);
-      }
-    });
   </script>
 </body>
 </html>
