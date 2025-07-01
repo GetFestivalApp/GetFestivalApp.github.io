@@ -300,4 +300,35 @@
       const email = e.target.email.value.trim();
 
       if (!emailRegex.test(email)) {
-        showMsg("Please enter a
+        showMsg("Please enter a valid email.", true);
+        return;
+      }
+
+      try {
+        const res = await fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        if (!res.ok) {
+          let msg = await res.text();
+          try { msg = (JSON.parse(msg).error) || msg; } catch (_) {}
+          throw new Error(msg);
+        }
+
+        showMsg("🎉 You’re on the list! Watch your inbox for launch news.", false);
+        form.reset();
+      } catch (err) {
+        const friendlyError = err.message.includes("duplicate key") ? "You’re already on the list! 🎉" : err.message;
+        showMsg("Oops! " + friendlyError, true);
+      }
+    });
+
+    function showMsg(text, isError = false) {
+      message.textContent = text;
+      message.style.color = isError ? "#ff8faa" : "#ffffff";
+    }
+  </script>
+</body>
+</html>
