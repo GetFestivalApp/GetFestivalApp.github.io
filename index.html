@@ -105,6 +105,51 @@
       text-shadow: 0 0 8px var(--neon-orange);
     }
 
+    .features {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .features > div {
+      flex: 1 1 320px;
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.75rem;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(255, 0, 125, 0.2);
+      color: #fff;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    .features > div.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .features > div:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 125, 0.35), 0 0 60px rgba(255, 138, 0, 0.15);
+    }
+
+    .features h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--neon-pink);
+      text-shadow: 0 0 6px var(--neon-pink);
+    }
+
+    .divider {
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+      backdrop-filter: blur(10px);
+      margin: 0 1rem;
+    }
+
     .waitlist {
       background: var(--glass-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -172,6 +217,12 @@
       color: #888;
     }
 
+    @media(max-width: 800px) {
+      .divider {
+        display: none;
+      }
+    }
+
     @media(max-width: 500px) {
       h1 { font-size: 2.25rem; }
       input[type="email"] { width: 100%; }
@@ -188,15 +239,23 @@
     <h1>Festival is Coming</h1>
     <p class="tagline">The future of nightlife payments – fast, fun, and rewarding.</p>
 
-    <p>
-      Festival lets students deposit money into local bar, club, and restaurant
-      balances, spend instantly, and earn cashback on larger deposits —
-      no cards, no hassle.
-    </p>
-    <p>
-      Whether you're buying drinks, covering entry, or treating friends,
-      Festival makes it effortless. Bars win too, with upfront revenue and real-time analytics.
-    </p>
+    <div class="features">
+      <div class="students">
+        <h2>For Students</h2>
+        <p>
+          Festival lets you deposit money into exclusive bar and club balances that you can spend instantly through our mobile app — no cards, no cash, no waiting. The more you deposit, the more you earn back with built-in cashback rewards. Whether you're grabbing a drink, skipping the line, or covering a table, Festival makes nightlife seamless.
+        </p>
+      </div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <div class="businesses">
+        <h2>For Businesses</h2>
+        <p>
+          Festival gives bars, clubs, and restaurants instant access to upfront revenue and a modern customer experience. Accept deposits, drive higher spend with built-in incentives, and track everything in real time with our business dashboard. No hardware, no point-of-sale integration required.
+        </p>
+      </div>
+    </div>
 
     <div class="waitlist">
       <h2>Join the Waitlist</h2>
@@ -215,13 +274,14 @@
     </footer>
   </div>
 
+  <!-- Waitlist Script -->
   <script>
     const WAITLIST_ENDPOINT = "https://aakqexydkkkqplzakkoa.functions.supabase.co/join-waitlist";
 
     const form = document.getElementById("waitlist-form");
     const message = document.getElementById("message");
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -257,6 +317,21 @@
       message.textContent = text;
       message.style.color = isError ? "#ff8faa" : "#ffffff";
     }
+
+    // Animate feature sections on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.features > div').forEach(div => {
+      if (!div.classList.contains('divider')) {
+        observer.observe(div);
+      }
+    });
   </script>
 </body>
 </html>
